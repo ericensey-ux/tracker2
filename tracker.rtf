@@ -1,0 +1,693 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 <!DOCTYPE html>\
+2\
+<html>\
+3\
+<head>\
+4\
+<meta charset="utf-8">\
+5\
+<meta name="viewport" content="width=device-width,initial-scale=1">\
+6\
+<title>Short Game Tracker</title>\
+7\
+\'a0\
+8\
+<style>\
+9\
+body\{\
+10\
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;\
+11\
+max-width:800px;\
+12\
+margin:auto;\
+13\
+padding:16px;\
+14\
+background:#f2f2f7;\
+15\
+\}\
+16\
+\'a0\
+17\
+h1,h2\{\
+18\
+margin:8px 0;\
+19\
+\}\
+20\
+\'a0\
+21\
+.card\{\
+22\
+background:#fff;\
+23\
+padding:14px;\
+24\
+border-radius:14px;\
+25\
+margin-bottom:12px;\
+26\
+\}\
+27\
+\'a0\
+28\
+.station\{\
+29\
+display:flex;\
+30\
+justify-content:space-between;\
+31\
+align-items:center;\
+32\
+padding:8px 0;\
+33\
+border-bottom:1px solid #eee;\
+34\
+\}\
+35\
+\'a0\
+36\
+input[type=number]\{\
+37\
+width:80px;\
+38\
+height:50px;\
+39\
+font-size:24px;\
+40\
+text-align:center;\
+41\
+\}\
+42\
+\'a0\
+43\
+button\{\
+44\
+padding:12px;\
+45\
+border:none;\
+46\
+border-radius:10px;\
+47\
+margin:4px;\
+48\
+font-size:16px;\
+49\
+\}\
+50\
+\'a0\
+51\
+.save\{\
+52\
+background:#16a34a;\
+53\
+color:white;\
+54\
+\}\
+55\
+\'a0\
+56\
+.reset\{\
+57\
+background:#dc2626;\
+58\
+color:white;\
+59\
+\}\
+60\
+\'a0\
+61\
+.tab\{\
+62\
+background:#ddd;\
+63\
+\}\
+64\
+\'a0\
+65\
+.active\{\
+66\
+background:#111;\
+67\
+color:white;\
+68\
+\}\
+69\
+\'a0\
+70\
+.hidden\{\
+71\
+display:none;\
+72\
+\}\
+73\
+\'a0\
+74\
+.hist\{\
+75\
+padding:8px;\
+76\
+border-bottom:1px solid #eee;\
+77\
+\}\
+78\
+</style>\
+79\
+</head>\
+80\
+\'a0\
+81\
+<body>\
+82\
+\'a0\
+83\
+<h1>\uc0\u9971  Short Game Tracker</h1>\
+84\
+\'a0\
+85\
+<div class="card">\
+86\
+<h2>Scoring Guide</h2>\
+87\
+<div>\uc0\u55356 \u57286  In the Hole = 4</div>\
+88\
+<div>\uc0\u9989  Inside 3 Feet = 2</div>\
+89\
+<div>\uc0\u55357 \u56397  Between 3 and 6 Feet = 1</div>\
+90\
+<div>\uc0\u10134  Outside 6 Feet = 0</div>\
+91\
+<br>\
+92\
+<strong>Maximum Station Score = 40</strong>\
+93\
+</div>\
+94\
+\'a0\
+95\
+<button id="practiceBtn" class="tab active">Practice</button>\
+96\
+<button id="insightsBtn" class="tab">Insights</button>\
+97\
+\'a0\
+98\
+<div id="practice">\
+99\
+\'a0\
+100\
+<div class="card">\
+101\
+<label>\
+102\
+Practice Date:\
+103\
+<input type="date" id="practiceDate">\
+104\
+</label>\
+105\
+</div>\
+106\
+\'a0\
+107\
+<div class="card" id="stations"></div>\
+108\
+\'a0\
+109\
+<button class="save" onclick="saveSession()">\
+110\
+Save Session\
+111\
+</button>\
+112\
+\'a0\
+113\
+<button class="reset" onclick="resetSession()">\
+114\
+Reset Session\
+115\
+</button>\
+116\
+\'a0\
+117\
+<button class="reset" onclick="clearAllData()">\
+118\
+Clear All Data\
+119\
+</button>\
+120\
+\'a0\
+121\
+</div>\
+122\
+\'a0\
+123\
+<div id="insights" class="hidden">\
+124\
+\'a0\
+125\
+<div class="card">\
+126\
+<h2>Focus Areas</h2>\
+127\
+<div id="focus"></div>\
+128\
+</div>\
+129\
+\'a0\
+130\
+<div class="card">\
+131\
+<h2>Strengths</h2>\
+132\
+<div id="strengths"></div>\
+133\
+</div>\
+134\
+\'a0\
+135\
+<div class="card">\
+136\
+<h2>Next Practice</h2>\
+137\
+<div id="practicePlan"></div>\
+138\
+</div>\
+139\
+\'a0\
+140\
+<div class="card">\
+141\
+<h2>Personal Bests</h2>\
+142\
+<div id="bests"></div>\
+143\
+</div>\
+144\
+\'a0\
+145\
+<div class="card">\
+146\
+<h2>History</h2>\
+147\
+<div id="history"></div>\
+148\
+</div>\
+149\
+\'a0\
+150\
+</div>\
+151\
+\'a0\
+152\
+<script>\
+153\
+\'a0\
+154\
+const stations = [\
+155\
+'50 yd Wedge - Back',\
+156\
+'10 yd Fringe - Mid',\
+157\
+'30 yd Wedge - Mid',\
+158\
+'20 yd Rough - Back',\
+159\
+'8 yd Sand - Mid',\
+160\
+'15 yd Pitch',\
+161\
+'15 yd Blast',\
+162\
+'15 yd Cut Lob'\
+163\
+];\
+164\
+\'a0\
+165\
+const box = document.getElementById('stations');\
+166\
+\'a0\
+167\
+stations.forEach(name => \{\
+168\
+box.innerHTML += `\
+169\
+<div class="station">\
+170\
+<span>$\{name\}</span>\
+171\
+<input type="number" min="0" max="40" value="0" id="$\{name\}">\
+172\
+</div>\
+173\
+`;\
+174\
+\});\
+175\
+\'a0\
+176\
+let sessions =\
+177\
+JSON.parse(localStorage.getItem('sgt_sessions') || '[]');\
+178\
+\'a0\
+179\
+function saveData() \{\
+180\
+localStorage.setItem(\
+181\
+'sgt_sessions',\
+182\
+JSON.stringify(sessions)\
+183\
+);\
+184\
+\}\
+185\
+\'a0\
+186\
+function saveSession() \{\
+187\
+\'a0\
+188\
+const date =\
+189\
+document.getElementById('practiceDate').value ||\
+190\
+new Date().toISOString().slice(0,10);\
+191\
+\'a0\
+192\
+const session = \{\
+193\
+id: Date.now(),\
+194\
+date: date,\
+195\
+scores: \{\}\
+196\
+\};\
+197\
+\'a0\
+198\
+stations.forEach(name => \{\
+199\
+session.scores[name] =\
+200\
+Number(document.getElementById(name).value || 0);\
+201\
+\});\
+202\
+\'a0\
+203\
+sessions.unshift(session);\
+204\
+\'a0\
+205\
+saveData();\
+206\
+render();\
+207\
+\'a0\
+208\
+alert('Session Saved');\
+209\
+\}\
+210\
+\'a0\
+211\
+function resetSession() \{\
+212\
+stations.forEach(name => \{\
+213\
+document.getElementById(name).value = 0;\
+214\
+\});\
+215\
+\}\
+216\
+\'a0\
+217\
+function clearAllData() \{\
+218\
+\'a0\
+219\
+if(confirm('Delete all sessions?')) \{\
+220\
+sessions = [];\
+221\
+saveData();\
+222\
+render();\
+223\
+\}\
+224\
+\}\
+225\
+\'a0\
+226\
+function deleteSession(id) \{\
+227\
+\'a0\
+228\
+sessions = sessions.filter(\
+229\
+session => session.id !== id\
+230\
+);\
+231\
+\'a0\
+232\
+saveData();\
+233\
+render();\
+234\
+\}\
+235\
+\'a0\
+236\
+function editSession(id) \{\
+237\
+\'a0\
+238\
+const session =\
+239\
+sessions.find(s => s.id === id);\
+240\
+\'a0\
+241\
+if(!session) return;\
+242\
+\'a0\
+243\
+document.getElementById('practiceDate').value =\
+244\
+session.date;\
+245\
+\'a0\
+246\
+stations.forEach(name => \{\
+247\
+document.getElementById(name).value =\
+248\
+session.scores[name] || 0;\
+249\
+\});\
+250\
+\'a0\
+251\
+deleteSession(id);\
+252\
+\}\
+253\
+\'a0\
+254\
+function render() \{\
+255\
+\'a0\
+256\
+if(!sessions.length) \{\
+257\
+\'a0\
+258\
+focus.innerHTML = 'No data';\
+259\
+strengths.innerHTML = 'No data';\
+260\
+practicePlan.innerHTML = 'No data';\
+261\
+bests.innerHTML = 'No data';\
+262\
+history.innerHTML = 'No sessions';\
+263\
+\'a0\
+264\
+return;\
+265\
+\}\
+266\
+\'a0\
+267\
+const latest = sessions[0];\
+268\
+\'a0\
+269\
+const ranked =\
+270\
+stations\
+271\
+.map(name => (\{\
+272\
+name,\
+273\
+score: latest.scores[name] || 0\
+274\
+\}))\
+275\
+.sort((a,b) => a.score - b.score);\
+276\
+\'a0\
+277\
+focus.innerHTML =\
+278\
+ranked.slice(0,3)\
+279\
+.map(s => `\uc0\u9888 \u65039  $\{s.name\}`)\
+280\
+.join('<br>');\
+281\
+\'a0\
+282\
+strengths.innerHTML =\
+283\
+ranked.slice(-3)\
+284\
+.reverse()\
+285\
+.map(s => `\uc0\u9989  $\{s.name\}`)\
+286\
+.join('<br>');\
+287\
+\'a0\
+288\
+practicePlan.innerHTML =\
+289\
+`40% $\{ranked[0].name\}<br>\
+290\
+30% $\{ranked[1].name\}<br>\
+291\
+20% $\{ranked[2].name\}<br>\
+292\
+10% Everything Else`;\
+293\
+\'a0\
+294\
+let bestHtml = '';\
+295\
+\'a0\
+296\
+stations.forEach(name => \{\
+297\
+\'a0\
+298\
+const best =\
+299\
+Math.max(\
+300\
+...sessions.map(\
+301\
+session => session.scores[name] || 0\
+302\
+)\
+303\
+);\
+304\
+\'a0\
+305\
+bestHtml += `$\{name\}: $\{best\}<br>`;\
+306\
+\});\
+307\
+\'a0\
+308\
+bests.innerHTML = bestHtml;\
+309\
+\'a0\
+310\
+history.innerHTML =\
+311\
+sessions.map(session => `\
+312\
+<div class="hist">\
+313\
+$\{session.date\}\
+314\
+<button onclick="editSession($\{session.id\})">\
+315\
+Edit\
+316\
+</button>\
+317\
+<button onclick="deleteSession($\{session.id\})">\
+318\
+Delete\
+319\
+</button>\
+320\
+</div>\
+321\
+`).join('');\
+322\
+\}\
+323\
+\'a0\
+324\
+practiceBtn.onclick = () => \{\
+325\
+practice.classList.remove('hidden');\
+326\
+insights.classList.add('hidden');\
+327\
+\};\
+328\
+\'a0\
+329\
+insightsBtn.onclick = () => \{\
+330\
+practice.classList.add('hidden');\
+331\
+insights.classList.remove('hidden');\
+332\
+\};\
+333\
+\'a0\
+334\
+document.getElementById('practiceDate').value =\
+335\
+new Date().toISOString().slice(0,10);\
+336\
+\'a0\
+337\
+render();\
+338\
+\'a0\
+339\
+</script>\
+340\
+\'a0\
+341\
+</body>\
+342\
+</html>\
+}
