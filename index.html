@@ -6,7 +6,7 @@
 4
 <meta charset="utf-8">
 5
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 6
 <title>Short Game Tracker</title>
 7
@@ -16,7 +16,7 @@
 9
 body{
 10
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+font-family:-apple-system,sans-serif;
 11
 max-width:800px;
 12
@@ -30,655 +30,614 @@ background:#f2f2f7;
 16
  
 17
-h1,h2{
-18
-margin:8px 0;
-19
-}
-20
- 
-21
 .card{
-22
-background:#fff;
-23
+18
+background:white;
+19
 padding:14px;
-24
+20
 border-radius:14px;
-25
+21
 margin-bottom:12px;
-26
+22
 }
-27
+23
  
-28
+24
 .station{
-29
+25
 display:flex;
-30
+26
 justify-content:space-between;
-31
+27
 align-items:center;
-32
+28
 padding:8px 0;
-33
+29
 border-bottom:1px solid #eee;
-34
+30
 }
-35
+31
  
-36
+32
 input[type=number]{
-37
+33
 width:80px;
-38
+34
 height:50px;
-39
+35
 font-size:24px;
-40
+36
 text-align:center;
-41
+37
 }
-42
+38
  
-43
+39
 button{
-44
+40
 padding:12px;
-45
+41
 border:none;
-46
+42
 border-radius:10px;
-47
+43
 margin:4px;
-48
+44
 font-size:16px;
+45
+}
+46
+ 
+47
+.save{background:#16a34a;color:white;}
+48
+.reset{background:#dc2626;color:white;}
 49
-}
+ 
 50
- 
-51
-.save{
-52
-background:#16a34a;
-53
-color:white;
-54
-}
-55
- 
-56
-.reset{
-57
-background:#dc2626;
-58
-color:white;
-59
-}
-60
- 
-61
 .tab{
-62
+51
 background:#ddd;
-63
+52
 }
-64
+53
  
-65
+54
 .active{
-66
+55
 background:#111;
-67
+56
 color:white;
-68
+57
 }
+58
+ 
+59
+.hidden{
+60
+display:none;
+61
+}
+62
+ 
+63
+.hist{
+64
+padding:8px;
+65
+border-bottom:1px solid #eee;
+66
+}
+67
+</style>
+68
+</head>
 69
  
 70
-.hidden{
+<body>
 71
-display:none;
+ 
 72
-}
+<h1>⛳ Short Game Tracker</h1>
 73
  
 74
-.hist{
-75
-padding:8px;
-76
-border-bottom:1px solid #eee;
-77
-}
-78
-</style>
-79
-</head>
-80
- 
-81
-<body>
-82
- 
-83
-<h1>⛳ Short Game Tracker</h1>
-84
- 
-85
 <div class="card">
-86
+75
 <h2>Scoring Guide</h2>
-87
+76
 <div>🏆 In the Hole = 4</div>
-88
+77
 <div>✅ Inside 3 Feet = 2</div>
-89
+78
 <div>👍 Between 3 and 6 Feet = 1</div>
-90
+79
 <div>➖ Outside 6 Feet = 0</div>
-91
+80
 <br>
-92
+81
 <strong>Maximum Station Score = 40</strong>
-93
+82
 </div>
-94
+83
  
-95
+84
 <button id="practiceBtn" class="tab active">Practice</button>
-96
+85
 <button id="insightsBtn" class="tab">Insights</button>
+86
+ 
+87
+<div id="practice">
+88
+ 
+89
+<div class="card">
+90
+<label>
+91
+Practice Date:
+92
+<input type="date" id="practiceDate">
+93
+</label>
+94
+</div>
+95
+ 
+96
+<div class="card" id="stations"></div>
 97
  
 98
-<div id="practice">
+<button class="save" onclick="saveSession()">Save Session</button>
 99
- 
+<button class="reset" onclick="resetSession()">Reset Session</button>
 100
-<div class="card">
+<button class="reset" onclick="clearAllData()">Clear All Data</button>
 101
-<label>
+ 
 102
-Practice Date:
-103
-<input type="date" id="practiceDate">
-104
-</label>
-105
 </div>
+103
+ 
+104
+<div id="insights" class="hidden">
+105
+ 
 106
- 
+<div class="card">
 107
-<div class="card" id="stations"></div>
+<h2>Focus Areas</h2>
 108
- 
+<div id="focus"></div>
 109
-<button class="save" onclick="saveSession()">
+</div>
 110
-Save Session
+ 
 111
-</button>
+<div class="card">
 112
- 
+<h2>Strengths</h2>
 113
-<button class="reset" onclick="resetSession()">
+<div id="strengths"></div>
 114
-Reset Session
+</div>
 115
-</button>
-116
  
+116
+<div class="card">
 117
-<button class="reset" onclick="clearAllData()">
+<h2>Next Practice</h2>
 118
-Clear All Data
+<div id="practicePlan"></div>
 119
-</button>
+</div>
 120
  
 121
-</div>
+<div class="card">
 122
- 
+<h2>Personal Bests</h2>
 123
-<div id="insights" class="hidden">
+<div id="bests"></div>
 124
- 
+</div>
 125
-<div class="card">
-126
-<h2>Focus Areas</h2>
-127
-<div id="focus"></div>
-128
-</div>
-129
  
-130
+126
 <div class="card">
-131
-<h2>Strengths</h2>
-132
-<div id="strengths"></div>
-133
+127
+<h2>History</h2>
+128
+<div id="history"></div>
+129
 </div>
+130
+ 
+131
+</div>
+132
+ 
+133
+<script>
 134
  
 135
-<div class="card">
-136
-<h2>Next Practice</h2>
-137
-<div id="practicePlan"></div>
-138
-</div>
-139
- 
-140
-<div class="card">
-141
-<h2>Personal Bests</h2>
-142
-<div id="bests"></div>
-143
-</div>
-144
- 
-145
-<div class="card">
-146
-<h2>History</h2>
-147
-<div id="history"></div>
-148
-</div>
-149
- 
-150
-</div>
-151
- 
-152
-<script>
-153
- 
-154
 const stations = [
-155
+136
 '50 yd Wedge - Back',
-156
+137
 '10 yd Fringe - Mid',
-157
+138
 '30 yd Wedge - Mid',
-158
+139
 '20 yd Rough - Back',
-159
+140
 '8 yd Sand - Mid',
-160
+141
 '15 yd Pitch',
-161
+142
 '15 yd Blast',
-162
+143
 '15 yd Cut Lob'
-163
+144
 ];
-164
+145
  
-165
+146
 const box = document.getElementById('stations');
+147
+ 
+148
+stations.forEach(name => {
+149
+box.innerHTML += `
+150
+<div class="station">
+151
+<span>${name}</span>
+152
+<input type="number" min="0" max="40" value="0" id="${name}">
+153
+</div>
+154
+`;
+155
+});
+156
+ 
+157
+let sessions =
+158
+JSON.parse(localStorage.getItem('sgt_sessions') || '[]');
+159
+ 
+160
+function saveData(){
+161
+localStorage.setItem(
+162
+'sgt_sessions',
+163
+JSON.stringify(sessions)
+164
+);
+165
+}
 166
  
 167
-stations.forEach(name => {
+function saveSession(){
 168
-box.innerHTML += `
-169
-<div class="station">
-170
-<span>${name}</span>
-171
-<input type="number" min="0" max="40" value="0" id="${name}">
-172
-</div>
-173
-`;
-174
-});
-175
  
+169
+const date =
+170
+document.getElementById('practiceDate').value ||
+171
+new Date().toISOString().slice(0,10);
+172
+ 
+173
+const session = {
+174
+id: Date.now(),
+175
+date: date,
 176
-let sessions =
+scores: {}
 177
-JSON.parse(localStorage.getItem('sgt_sessions') || '[]');
+};
 178
  
 179
-function saveData() {
+stations.forEach(name => {
 180
-localStorage.setItem(
+session.scores[name] =
 181
-'sgt_sessions',
+Number(document.getElementById(name).value || 0);
 182
-JSON.stringify(sessions)
+});
 183
-);
+ 
 184
-}
+sessions.unshift(session);
 185
  
 186
-function saveSession() {
+saveData();
 187
- 
+render();
 188
-const date =
+ 
 189
-document.getElementById('practiceDate').value ||
+alert('Session Saved');
 190
-new Date().toISOString().slice(0,10);
+}
 191
  
 192
-const session = {
+function resetSession(){
 193
-id: Date.now(),
+stations.forEach(name=>{
 194
-date: date,
+document.getElementById(name).value=0;
 195
-scores: {}
+});
 196
-};
+}
 197
  
 198
-stations.forEach(name => {
+function clearAllData(){
 199
-session.scores[name] =
+ 
 200
-Number(document.getElementById(name).value || 0);
+if(confirm('Delete all sessions?')){
 201
-});
+sessions=[];
 202
- 
+saveData();
 203
-sessions.unshift(session);
+render();
 204
- 
+}
 205
-saveData();
+}
 206
-render();
+ 
 207
- 
+function deleteSession(id){
 208
-alert('Session Saved');
+ 
 209
-}
+sessions =
 210
- 
+sessions.filter(
 211
-function resetSession() {
+s => s.id !== id
 212
-stations.forEach(name => {
-213
-document.getElementById(name).value = 0;
-214
-});
-215
-}
-216
- 
-217
-function clearAllData() {
-218
- 
-219
-if(confirm('Delete all sessions?')) {
-220
-sessions = [];
-221
-saveData();
-222
-render();
-223
-}
-224
-}
-225
- 
-226
-function deleteSession(id) {
-227
- 
-228
-sessions = sessions.filter(
-229
-session => session.id !== id
-230
 );
-231
+213
  
-232
+214
 saveData();
-233
+215
 render();
-234
+216
 }
-235
+217
  
+218
+function editSession(id){
+219
+ 
+220
+const session =
+221
+sessions.find(
+222
+s => s.id === id
+223
+);
+224
+ 
+225
+if(!session) return;
+226
+ 
+227
+document.getElementById('practiceDate').value =
+228
+session.date;
+229
+ 
+230
+stations.forEach(name=>{
+231
+document.getElementById(name).value =
+232
+session.scores[name] || 0;
+233
+});
+234
+ 
+235
+deleteSession(id);
 236
-function editSession(id) {
+}
 237
  
 238
-const session =
+function render(){
 239
-sessions.find(s => s.id === id);
+ 
 240
- 
+if(!sessions.length){
 241
-if(!session) return;
+ 
 242
- 
+focus.innerHTML='No data';
 243
-document.getElementById('practiceDate').value =
+strengths.innerHTML='No data';
 244
-session.date;
+practicePlan.innerHTML='No data';
 245
- 
+bests.innerHTML='No data';
 246
-stations.forEach(name => {
+history.innerHTML='No sessions';
 247
-document.getElementById(name).value =
+ 
 248
-session.scores[name] || 0;
+return;
 249
-});
+}
 250
  
 251
-deleteSession(id);
-252
-}
-253
- 
-254
-function render() {
-255
- 
-256
-if(!sessions.length) {
-257
- 
-258
-focus.innerHTML = 'No data';
-259
-strengths.innerHTML = 'No data';
-260
-practicePlan.innerHTML = 'No data';
-261
-bests.innerHTML = 'No data';
-262
-history.innerHTML = 'No sessions';
-263
- 
-264
-return;
-265
-}
-266
- 
-267
 const latest = sessions[0];
-268
+252
  
-269
+253
 const ranked =
-270
+254
 stations
-271
+255
 .map(name => ({
-272
-name,
-273
-score: latest.scores[name] || 0
-274
+256
+name:name,
+257
+score:latest.scores[name] || 0
+258
 }))
-275
-.sort((a,b) => a.score - b.score);
-276
+259
+.sort((a,b)=>a.score-b.score);
+260
  
-277
+261
 focus.innerHTML =
-278
+262
 ranked.slice(0,3)
-279
-.map(s => `⚠️ ${s.name}`)
-280
+263
+.map(s=>`⚠️ ${s.name}`)
+264
 .join('<br>');
+265
+ 
+266
+strengths.innerHTML =
+267
+ranked.slice(-3)
+268
+.reverse()
+269
+.map(s=>`✅ ${s.name}`)
+270
+.join('<br>');
+271
+ 
+272
+practicePlan.innerHTML =
+273
+`40% ${ranked[0].name}<br>
+274
+30% ${ranked[1].name}<br>
+275
+20% ${ranked[2].name}<br>
+276
+10% Everything Else`;
+277
+ 
+278
+let bestHtml='';
+279
+ 
+280
+stations.forEach(name=>{
 281
  
 282
-strengths.innerHTML =
+const best =
 283
-ranked.slice(-3)
+Math.max(
 284
-.reverse()
+...sessions.map(
 285
-.map(s => `✅ ${s.name}`)
+s => s.scores[name] || 0
 286
-.join('<br>');
+)
 287
- 
+);
 288
-practicePlan.innerHTML =
+ 
 289
-`40% ${ranked[0].name}<br>
+bestHtml += `${name}: ${best}<br>`;
 290
-30% ${ranked[1].name}<br>
+});
 291
-20% ${ranked[2].name}<br>
+ 
 292
-10% Everything Else`;
+bests.innerHTML = bestHtml;
 293
  
 294
-let bestHtml = '';
-295
- 
-296
-stations.forEach(name => {
-297
- 
-298
-const best =
-299
-Math.max(
-300
-...sessions.map(
-301
-session => session.scores[name] || 0
-302
-)
-303
-);
-304
- 
-305
-bestHtml += `${name}: ${best}<br>`;
-306
-});
-307
- 
-308
-bests.innerHTML = bestHtml;
-309
- 
-310
 history.innerHTML =
-311
-sessions.map(session => `
-312
+295
+sessions.map(s => `
+296
 <div class="hist">
-313
-${session.date}
-314
-<button onclick="editSession(${session.id})">
-315
-Edit
-316
-</button>
-317
-<button onclick="deleteSession(${session.id})">
-318
-Delete
-319
-</button>
-320
+297
+${s.date}
+298
+<button onclick="editSession(${s.id})">Edit</button>
+299
+<button onclick="deleteSession(${s.id})">Delete</button>
+300
 </div>
-321
+301
 `).join('');
-322
+302
 }
-323
+303
  
-324
+304
 practiceBtn.onclick = () => {
-325
+305
 practice.classList.remove('hidden');
-326
+306
 insights.classList.add('hidden');
-327
+307
 };
-328
+308
  
-329
+309
 insightsBtn.onclick = () => {
-330
+310
 practice.classList.add('hidden');
-331
+311
 insights.classList.remove('hidden');
-332
+312
 };
-333
+313
  
-334
+314
 document.getElementById('practiceDate').value =
-335
+315
 new Date().toISOString().slice(0,10);
-336
+316
  
-337
+317
 render();
-338
+318
  
-339
+319
 </script>
-340
+320
  
-341
+321
 </body>
-342
+322
 </html>
-
